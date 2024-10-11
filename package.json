@@ -1,0 +1,35 @@
+{
+  "name": "typescript1",
+  "version": "1.0.0",
+  "description": "usermanagment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shammasahamedp/typescript.git"
+  },
+  "author": "shammas ahamed p",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shammasahamedp/typescript/issues"
+  },
+  "homepage": "https://github.com/Shammasahamedp/typescript#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "mongoose": "^8.7.1",
+    "path": "^0.12.7",
+    "toastify-js": "^1.12.0",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.0",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^22.7.5",
+    "@types/uuid": "^10.0.0"
+  }
+}

@@ -1,0 +1,107 @@
+<% include('header') %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <link rel="stylesheet" href="/static/admincss/styledashboard.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <div class="container">
+        <h1 class="welcome">Add New User</h1>
+        <form id="registrationform">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="text" class="form-control" id="phone" name="phone" required>
+            </div>
+            <button onclick="submitForm(event)" class="btn btn-primary">Add User</button>
+        </form>
+    </div>
+    <script>
+        const name = document.getElementById('name')
+        const email = document.getElementById('email')
+        const password = document.getElementById('password')
+        const phone = document.getElementById('phone')
+        async function submitForm(event) {
+            event.preventDefault()
+            if (!isValidEmail(email.value)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            if (password.value.length < 6) {
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+            if (!isValidName(name.value)) {
+                alert('Name must contain only alphabetic characters.');
+                return;
+            }
+            if (!isValidPhone(phone.value)) {
+                alert('Phone number must be exactly 10 digits long and cannot start with 0 or consist of all zeros.');
+                return;
+            }
+            console.log(name.value,password.value)
+            // return 
+            const response = await fetch('/add',{
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name.value, password: password.value, email: email.value, phone: phone.value })
+            })
+            const data=await response.json()
+            if (response.ok) {
+                
+                Toastify({
+                    text: data.message,
+                    duration: 1000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#dc3545",
+                    stopOnFocus: true
+                }).showToast();
+               setTimeout(() => {
+                     window.location.href='/'
+               }, 2000);
+            }else{
+                Toastify({
+                    text: data.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#dc3545",
+                    stopOnFocus: true
+                }).showToast();
+                
+            }
+            console.log('this is after')
+        }
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@gmail\.com$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidName(name) {
+            const nameRegex = /^[A-Za-z]+$/;
+            return nameRegex.test(name);
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^[1-9][0-9]{9}$/;
+            return phoneRegex.test(phone) && !/^(0+)$/.test(phone);
+        }
+    </script>
+
+    <% include('footer') %>
