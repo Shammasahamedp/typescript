@@ -51,16 +51,33 @@ const deletUser=async(req:Request,res:Response)=>{
         console.log('error has occured',err)
     }
 }
-const getEdit=async (req:Request,res:Request)=>{
+const getEdit=async (req:Request,res:Response)=>{
     try{
-
+        const userId=req.query.userId
+        const user=await User.findById(userId)
+        res.render('adminedit',{user})
     }catch(err){
         console.log(err)
+    }
+}
+const postEdit=async (req:Request,res:Response)=>{
+    try{
+        console.log(req.method)
+        const {name,phone,email,userId}=req.body
+        const user=await User.findByIdAndUpdate(userId,{name,phone,email})
+        if(user){
+            res.json({message:'updated successfully'})
+        }else{
+            res.status(400).json({message:'user not found'})
+        }
+    }catch(err){
+        console.log('error occured',err)
     }
 }
 module.exports={
     getDashboard,
     getUserAdd,
     postUser,
-    deletUser
+    deletUser,
+    getEdit,postEdit
 }

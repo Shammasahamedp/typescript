@@ -54,9 +54,36 @@ const deletUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log('error has occured', err);
     }
 });
+const getEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.query.userId;
+        const user = yield User.findById(userId);
+        res.render('adminedit', { user });
+    }
+    catch (err) {
+        console.log(err);
+    }
+});
+const postEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        console.log(req.method);
+        const { name, phone, email, userId } = req.body;
+        const user = yield User.findByIdAndUpdate(userId, { name, phone, email });
+        if (user) {
+            res.json({ message: 'updated successfully' });
+        }
+        else {
+            res.status(400).json({ message: 'user not found' });
+        }
+    }
+    catch (err) {
+        console.log('error occured', err);
+    }
+});
 module.exports = {
     getDashboard,
     getUserAdd,
     postUser,
-    deletUser
+    deletUser,
+    getEdit, postEdit
 };
